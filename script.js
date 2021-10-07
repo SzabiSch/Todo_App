@@ -15,12 +15,18 @@ function addNewTodo() {
 
   const newLi = document.createElement("li");
   newLi.innerText = todoValue;
-  console.log(todoValue);
+  //console.log(todoValue);
 
   newLi.setAttribute("data-todo", todoValue.toLowerCase());
 
   const listEl = document.querySelector("#todo-list");
   listEl.appendChild(newLi);
+
+  //put in a new checkbox
+
+  const newBox = document.createElement("input");
+  newBox.setAttribute("type", "checkbox");
+  listEl.appendChild(newBox);
 
   newTodoEl.value = "";
 }
