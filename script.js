@@ -26,7 +26,7 @@ function addNewTodo() {
 
   const newBox = document.createElement("input");
   newBox.setAttribute("type", "checkbox");
-  listEl.appendChild(newBox);
+  newLi.appendChild(newBox);
 
   newTodoEl.value = "";
 }
@@ -47,4 +47,18 @@ function isDuplicate(todo) {
   }
 
   return false;
+}
+
+//Da wird überstreicheln erledigt
+const itemChecked = document.querySelector("#todo-list");
+
+itemChecked.addEventListener("change", isChecked);
+
+function isChecked(event) {
+  const checkbox = event.target;
+  if (checkbox.checked === true) {
+    checkbox.parentElement.classList.add("done");
+  } else {
+    checkbox.parentElement.classList.remove("done");
+  }
 }
