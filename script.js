@@ -1,51 +1,24 @@
 console.log("Hello To Do App");
 
-function addNewTodo() {
-  const newTodoEl = document.querySelector("#new-todo");
-  const todoValue = newTodoEl.value.trim();
-
-  if (todoValue.length === 0) {
-    return;
-  }
-
-  if (isDuplicate(todoValue)) {
-    alert("Try one more time, already exist!");
-    return;
-  }
-
-  const newLi = document.createElement("li");
-  newLi.innerText = todoValue;
-  //console.log(todoValue);
-
-  newLi.setAttribute("data-todo", todoValue.toLowerCase());
-
-  const listEl = document.querySelector("#todo-list");
-  listEl.appendChild(newLi);
-
-  //put in a new checkbox
-
-  const newBox = document.createElement("input");
-  newBox.setAttribute("type", "checkbox");
-  newLi.appendChild(newBox);
-
-  newTodoEl.value = "";
-}
-
 const addTodoBtn = document.querySelector("#add-todo");
 addTodoBtn.addEventListener("click", addNewTodo);
 
-function isDuplicate(todo) {
-  todo = todo.toLowerCase();
+function isDuplicate(newTodo) {
+  newTodo = newTodo.toLowerCase();
+  renderList();
   const todoListEl = document.querySelector("#todo-list");
-
+  console.log("Länge: " + todoListEl.children.length);
   for (let i = 0; i < todoListEl.children.length; i++) {
     const currentLiEl = todoListEl.children[i];
-    const currentTodo = currentLiEl.getAttribute("data-todo");
-    if (currentTodo === todo) {
+    const currentLiElText = currentLiEl
+      .querySelector("label")
+      .innerText.toLowerCase();
+
+    console.log("jetzt: " + currentLiElText);
+    if (currentLiElText === newTodo) {
       return true;
     }
   }
-
   return false;
 }
 
@@ -101,8 +74,17 @@ function addNewTodo() {
     description: todoText,
     done: false,
   };
-  console.log(todoItem);
-  //bis hier gut
+
+  if (todoText.length === 0) {
+    alert("Try one more time, field is empty!");
+    return;
+  }
+
+  if (isDuplicate(todoText)) {
+    alert("Try one more time, already exist!");
+    return;
+  }
+
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -114,9 +96,37 @@ function addNewTodo() {
     .then(function reloadList() {
       listHead.innerHTML = "";
       todoField.value = "";
-
-      setTimeout(renderList, 1500);
+      //let wait
+      setTimeout(renderList, 3000);
     });
 }
 
 addTodoBtn.addEventListener("click", addNewTodo);
+
+//DELETE
+// const btnDelete = document.querySelector("#btn-delete");
+// const listHead = document.querySelector("#todo-list");
+// function deleteTodo() {
+//   const todoField = document.getElementById("new-todo");
+//   const todoText = todoField.value;
+
+//   const todoItem = {
+//     description: todoText,
+//     done: false,
+//   };
+
+//   const requestOptions = {
+//     method: "DELETE",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(todoItem),
+//   };
+//   fetch(url, requestOptions)
+//     .then((response) => response.json())
+//     .then((data) => console.log("Success:", data))
+//     .then(function reloadList() {
+//       listHead.innerHTML = "";
+//       todoField.value = "";
+//     });
+// }
+
+// btnDelete.addEventListener("click", deleteTodo);
